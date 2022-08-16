@@ -6,7 +6,8 @@
     "dev": "tsnd --respawn  ./src/index",
     "start": "node ./dist/index",
     "build": "tsc",
-    "prebuild": "rimraf ./dist"
+    "prebuild": "rimraf ./dist",
+    "migrate:dev": "npx prisma migrate dev"
   },
   "keywords": [],
   "author": "",

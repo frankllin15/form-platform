@@ -1,12 +1,32 @@
 import { CreateQuestionInput } from "./../types/questions.d";
-import { CreateFormInput } from "../types/form";
+import {
+  CreateFormInput,
+  FindManyFormsInput,
+  FindUniqueFormInput,
+  UpdateFormInput,
+  CreateQuestionUpdateForm,
+} from "../types/form";
 import db from "../lib/prismaClient";
 import { v4 as uuid } from "uuid";
+
+const formIncludes = {
+  questions: {
+    include: {
+      options: {
+        select: {
+          id: true,
+          text: true,
+          answer: true,
+          order: true,
+        },
+      },
+    },
+  },
+};
 
 export const FormService = {
   async create(input: CreateFormInput) {
     const { name, description, questions } = input;
-    const formId = uuid();
 
     return await db.form.create({
       data: {
@@ -31,23 +51,47 @@ export const FormService = {
       },
     });
   },
+  async findMany(input: FindManyFormsInput) {
+    return await db.form.findMany({
+      ...input,
+      include: {
+        ...formIncludes,
+      },
+    });
+  },
 
-  async createFormQuestion(input: CreateQuestionInput) {
-    const { text, options } = input;
-    return await db.question.create({
+  async findUnique(input: FindUniqueFormInput) {
+    console.log("input", input);
+    return await db.form.findUnique({
+      where: {
+        id: input.id,
+      },
+      include: {
+        ...formIncludes,
+      },
+    });
+  },
+  async update({ id, data }: UpdateFormInput) {
+    const form = db.form.update({
+      where: {
+        id,
+      },
       data: {
-        formId: "",
-        text,
-        options: {
-          create: options.map((option, index) => {
+        ...data,
+        questions: {
+          update: data.questions.update.map((question) => {
             return {
-              text: option.text,
-              answer: option.answer,
-              order: index,
+              where: {
+                id: question.id,
+              },
+              data: {},
             };
           }),
         },
       },
     });
+  },
+  async totalItems() {
+    return await db.form.count();
   },
 };
