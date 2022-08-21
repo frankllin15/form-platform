@@ -1,16 +1,31 @@
 import db from "../lib/prismaClient";
 import { Request, Response } from "express";
-import { CreateFormRequest, GetFormRequest } from "./../types/form.d";
+import {
+  CreateFormInput,
+  CreateFormRequest,
+  GetFormRequest,
+} from "./../types/form.d";
 import { FormService } from "../services/Form.service";
+import { validate } from "../utils/validator";
+import { formValidator } from "../validators/form.validator";
+import { createErrorResponse, HttpError } from "../utils/error";
 export const FormController = {
   async create(req: Request, res: Response) {
     try {
+      const payload = req.body as CreateFormInput;
+
+      const { isValid, errors } = validate(payload, formValidator);
+      console.log(errors);
+      if (!isValid) {
+        throw new HttpError(400, "Invalid payload", errors);
+      }
+
       const form = await FormService.create(req.body);
 
-      return res.status(202).json(form);
+      return res.status(201).json(form);
     } catch (err: any) {
-      console.log(err);
-      return res.status(500).json({ error: err.message });
+      const { status, ...error } = createErrorResponse(err);
+      return res.status(status).json(error);
     }
   },
   async findMany(req: Request, res: Response) {
