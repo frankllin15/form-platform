@@ -7,14 +7,17 @@ import {
 } from "./../types/form.d";
 import { FormService } from "../services/Form.service";
 import { validate } from "../utils/validator";
-import { formValidator } from "../validators/form.validator";
+import {
+  createFormValidator,
+  updateFormValidator,
+} from "../validators/form.validator";
 import { createErrorResponse, HttpError } from "../utils/error";
 export const FormController = {
   async create(req: Request, res: Response) {
     try {
       const payload = req.body as CreateFormInput;
 
-      const { isValid, errors } = validate(payload, formValidator);
+      const { isValid, errors } = validate(payload, createFormValidator);
       console.log(errors);
       if (!isValid) {
         throw new HttpError(400, "Invalid payload", errors);
@@ -59,6 +62,34 @@ export const FormController = {
           message: e.message,
         },
       });
+    }
+  },
+  async update(req: Request, res: Response) {
+    const { id } = req.params as { id: string };
+    const { data } = req.body;
+    try {
+      const { isValid, errors } = validate({ id, data }, updateFormValidator);
+      if (!isValid) throw new HttpError(400, "Invalid params", errors);
+      const form = await FormService.update({ id, data });
+
+      res.status(201).json({
+        form,
+      });
+    } catch (err: any) {
+      const { status, ...error } = createErrorResponse(err);
+      return res.status(status).json(error);
+    }
+  },
+  async delete(req: Request, res: Response) {
+    const { id } = req.params as { id: string };
+    try {
+      if (!id) throw new HttpError(400, "Required param missing 'id'");
+      await FormService.delete({ id });
+
+      res.status(204).end();
+    } catch (err: any) {
+      const { status, ...error } = createErrorResponse(err);
+      return res.status(status).json(error);
     }
   },
 };

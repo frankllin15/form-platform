@@ -1,13 +1,10 @@
-import { CreateQuestionInput } from "./../types/questions.d";
 import {
   CreateFormInput,
   FindManyFormsInput,
   FindUniqueFormInput,
   UpdateFormInput,
-  CreateQuestionUpdateForm,
 } from "../types/form";
 import db from "../lib/prismaClient";
-import { v4 as uuid } from "uuid";
 
 const formIncludes = {
   questions: {
@@ -71,23 +68,93 @@ export const FormService = {
       },
     });
   },
-  async update({ id, data }: UpdateFormInput) {
-    const form = db.form.update({
+  async update({ id, data: { questions, ...formData } }: UpdateFormInput) {
+    console.log("formData", questions.update[0].options?.delete[0]);
+    return await db.form.update({
       where: {
         id,
       },
       data: {
-        ...data,
+        ...formData,
         questions: {
-          update: data.questions.update.map((question) => {
+          update: questions?.update?.map((question) => {
+            const { id, options, ...questionData } = question;
             return {
               where: {
-                id: question.id,
+                id: id,
               },
-              data: {},
+              data: {
+                ...questionData,
+                options: {
+                  update: options?.update?.map((option) => {
+                    const { id, ...optionData } = option;
+                    return {
+                      where: {
+                        id: id,
+                      },
+                      data: {
+                        ...optionData,
+                      },
+                    };
+                  }),
+                  create: options?.create?.map((option, index) => {
+                    return {
+                      text: option.text,
+                      answer: option.answer,
+                      order: index,
+                    };
+                  }),
+                  deleteMany: {
+                    id: {
+                      in: options?.delete?.map((option) => {
+                        console.log(option);
+                        return option.id;
+                      }),
+                    },
+                  },
+                },
+              },
+            };
+          }),
+          create: questions?.create?.map((question) => {
+            return {
+              text: question.text,
+              options: {
+                create: question.options.map((option, index) => {
+                  return {
+                    text: option.text,
+                    answer: option.answer,
+                    order: index,
+                  };
+                }),
+              },
             };
           }),
         },
+      },
+      include: {
+        questions: {
+          include: { options: true },
+        },
+      },
+    });
+  },
+  async delete({ id }: FindUniqueFormInput) {
+    db.form.update({
+      where: {
+        id,
+      },
+      data: {
+        questions: {
+          deleteMany: {
+            id: {},
+          },
+        },
+      },
+    });
+    await db.form.delete({
+      where: {
+        id,
       },
     });
   },

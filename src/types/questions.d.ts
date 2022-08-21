@@ -7,15 +7,13 @@ export type CreateQuestionInput = {
 
 export type UpdateQuestionInput = {
   id: string;
-  data: {
-    text?: string;
-    options?: {
-      update: UpdateOptionQuestionInput;
-      create: CreateOptionQuestionInput;
-      delete: {
-        id: string;
-      };
-    };
+  text?: string;
+  options?: {
+    update: UpdateOptionQuestionInput[];
+    create: CreateOptionQuestionInput[];
+    delete: {
+      id: string;
+    }[];
   };
 };
 
@@ -27,10 +25,8 @@ export type CreateOptionQuestionInput = {
 
 export type UpdateOptionQuestionInput = {
   id: string;
-  data: {
-    text?: string;
-    answer?: boolean;
-  };
+  text?: string;
+  answer?: boolean;
 };
 
 export type CreateQuestionRequest = TypedRequestBody<CreateQuestionInput>;
