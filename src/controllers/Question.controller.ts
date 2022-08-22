@@ -1,6 +1,6 @@
-import { CreateQuestionRequest } from "./../types/questions.d";
-import db from "../lib/prismaClient";
-import { Request, Response } from "express";
+import { CreateQuestionRequest } from './../types/questions.d';
+import db from '../lib/prismaClient';
+import { Request, Response } from 'express';
 
 export const QuestionController = {
   async create(req: Request, res: Response) {

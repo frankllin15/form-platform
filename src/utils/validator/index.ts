@@ -5,7 +5,7 @@
  */
 export function validate(input: ValidatorInput, schema: ValidatorSchema) {
   const errors: any = [];
-  Object.keys(schema).forEach((key) => {
+  Object.keys(schema).forEach(key => {
     const value = input[key];
     const { type, required } = schema[key];
     if (!required && !value) return;
@@ -13,15 +13,15 @@ export function validate(input: ValidatorInput, schema: ValidatorSchema) {
       errors.push(`${key} is required`);
       return;
     }
-    if (type === "string" && typeof value !== "string") {
+    if (type === 'string' && typeof value !== 'string') {
       errors.push(`${key} must be a string`);
       return;
     }
-    if (type === "number" && typeof value !== "number") {
+    if (type === 'number' && typeof value !== 'number') {
       errors.push(`${key} must be a number`);
       return;
     }
-    if (type === "array") {
+    if (type === 'array') {
       if (!Array.isArray(value)) {
         errors.push(`${key} must be an array`);
         return;
@@ -34,15 +34,15 @@ export function validate(input: ValidatorInput, schema: ValidatorSchema) {
         }
         const itemErrors = validate(item, items);
         if (itemErrors.errors.length) {
-          errors.push(`${key}[${index}].${itemErrors.errors.join(", ")}`);
+          errors.push(`${key}[${index}].${itemErrors.errors.join(', ')}`);
 
           return;
         }
       });
     }
 
-    if (type === "object") {
-      if (typeof value !== "object") {
+    if (type === 'object') {
+      if (typeof value !== 'object') {
         errors.push(`${key} must be an object`);
         return;
       }
@@ -53,7 +53,7 @@ export function validate(input: ValidatorInput, schema: ValidatorSchema) {
       }
       const itemErrors = validate(value, items);
       if (itemErrors.errors.length) {
-        errors.push(`${key}.${itemErrors.errors.join(", ")}`);
+        errors.push(`${key}.${itemErrors.errors.join(', ')}`);
 
         return;
       }
@@ -70,7 +70,7 @@ export function validate(input: ValidatorInput, schema: ValidatorSchema) {
 
 export type ValidatorSchema = {
   [key: string]: {
-    type: "string" | "number" | "array" | "object" | "boolean";
+    type: 'string' | 'number' | 'array' | 'object' | 'boolean';
     required?: boolean;
     items?: ValidatorSchema;
   };

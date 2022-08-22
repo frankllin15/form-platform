@@ -1,33 +1,33 @@
-import { validate } from "../utils/validator";
-import { CreateFormInput } from "./../types/form.d";
-import { ValidatorSchema } from "../utils/validator";
+import { validate } from '../utils/validator';
+import { CreateFormInput } from './../types/form.d';
+import { ValidatorSchema } from '../utils/validator';
 export const createFormValidator: ValidatorSchema = {
   name: {
-    type: "string",
+    type: 'string',
     required: true,
   },
   description: {
-    type: "string",
+    type: 'string',
     required: true,
   },
   questions: {
-    type: "array",
+    type: 'array',
     required: true,
     items: {
       text: {
-        type: "string",
+        type: 'string',
         required: true,
       },
       options: {
-        type: "array",
+        type: 'array',
         required: true,
         items: {
           text: {
-            type: "string",
+            type: 'string',
             required: true,
           },
           answer: {
-            type: "boolean",
+            type: 'boolean',
             required: true,
           },
         },
@@ -38,38 +38,38 @@ export const createFormValidator: ValidatorSchema = {
 
 export const updateFormValidator: ValidatorSchema = {
   id: {
-    type: "string",
+    type: 'string',
     required: true,
   },
   data: {
-    type: "object",
+    type: 'object',
     required: true,
     items: {
       name: {
-        type: "string",
+        type: 'string',
       },
       description: {
-        type: "string",
+        type: 'string',
       },
       questions: {
-        type: "object",
+        type: 'object',
         items: {
           create: {
-            type: "array",
+            type: 'array',
             items: {
               text: {
-                type: "string",
+                type: 'string',
                 required: true,
               },
               options: {
-                type: "array",
+                type: 'array',
                 items: {
                   text: {
-                    type: "string",
+                    type: 'string',
                     required: true,
                   },
                   answer: {
-                    type: "boolean",
+                    type: 'boolean',
                     required: true,
                   },
                 },
@@ -77,49 +77,49 @@ export const updateFormValidator: ValidatorSchema = {
             },
           },
           update: {
-            type: "array",
+            type: 'array',
             items: {
               id: {
-                type: "string",
+                type: 'string',
                 required: true,
               },
               text: {
-                type: "string",
+                type: 'string',
               },
               options: {
-                type: "object",
+                type: 'object',
                 items: {
                   create: {
-                    type: "array",
+                    type: 'array',
                     items: {
                       text: {
-                        type: "string",
+                        type: 'string',
                       },
                       answer: {
-                        type: "boolean",
+                        type: 'boolean',
                       },
                     },
                   },
                   update: {
-                    type: "array",
+                    type: 'array',
                     items: {
                       id: {
-                        type: "string",
+                        type: 'string',
                         required: true,
                       },
                       text: {
-                        type: "string",
+                        type: 'string',
                       },
                       answer: {
-                        type: "boolean",
+                        type: 'boolean',
                       },
                     },
                   },
                   delete: {
-                    type: "array",
+                    type: 'array',
                     items: {
                       id: {
-                        type: "string",
+                        type: 'string',
                         required: true,
                       },
                     },
@@ -129,10 +129,10 @@ export const updateFormValidator: ValidatorSchema = {
             },
           },
           delete: {
-            type: "array",
+            type: 'array',
             items: {
               id: {
-                type: "string",
+                type: 'string',
                 required: true,
               },
             },

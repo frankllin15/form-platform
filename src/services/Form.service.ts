@@ -3,8 +3,8 @@ import {
   FindManyFormsInput,
   FindUniqueFormInput,
   UpdateFormInput,
-} from "../types/form";
-import db from "../lib/prismaClient";
+} from '../types/form';
+import db from '../lib/prismaClient';
 
 const formIncludes = {
   questions: {
@@ -30,7 +30,7 @@ export const FormService = {
         name,
         description,
         questions: {
-          create: questions.map((question) => {
+          create: questions.map(question => {
             return {
               text: question.text,
               options: {
@@ -58,7 +58,7 @@ export const FormService = {
   },
 
   async findUnique(input: FindUniqueFormInput) {
-    console.log("input", input);
+    console.log('input', input);
     return await db.form.findUnique({
       where: {
         id: input.id,
@@ -69,7 +69,7 @@ export const FormService = {
     });
   },
   async update({ id, data: { questions, ...formData } }: UpdateFormInput) {
-    console.log("formData", questions.update[0].options?.delete[0]);
+    console.log('formData', questions.update[0].options?.delete[0]);
     return await db.form.update({
       where: {
         id,
@@ -77,7 +77,7 @@ export const FormService = {
       data: {
         ...formData,
         questions: {
-          update: questions?.update?.map((question) => {
+          update: questions?.update?.map(question => {
             const { id, options, ...questionData } = question;
             return {
               where: {
@@ -86,7 +86,7 @@ export const FormService = {
               data: {
                 ...questionData,
                 options: {
-                  update: options?.update?.map((option) => {
+                  update: options?.update?.map(option => {
                     const { id, ...optionData } = option;
                     return {
                       where: {
@@ -106,7 +106,7 @@ export const FormService = {
                   }),
                   deleteMany: {
                     id: {
-                      in: options?.delete?.map((option) => {
+                      in: options?.delete?.map(option => {
                         console.log(option);
                         return option.id;
                       }),
@@ -116,7 +116,7 @@ export const FormService = {
               },
             };
           }),
-          create: questions?.create?.map((question) => {
+          create: questions?.create?.map(question => {
             return {
               text: question.text,
               options: {

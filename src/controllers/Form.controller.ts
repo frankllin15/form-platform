@@ -1,17 +1,12 @@
-import db from "../lib/prismaClient";
-import { Request, Response } from "express";
-import {
-  CreateFormInput,
-  CreateFormRequest,
-  GetFormRequest,
-} from "./../types/form.d";
-import { FormService } from "../services/Form.service";
-import { validate } from "../utils/validator";
+import { Request, Response } from 'express';
+import type { CreateFormInput } from '../types/form';
+import { FormService } from '../services/Form.service';
+import { validate } from '../utils/validator';
 import {
   createFormValidator,
   updateFormValidator,
-} from "../validators/form.validator";
-import { createErrorResponse, HttpError } from "../utils/error";
+} from '../validators/form.validator';
+import { createErrorResponse, HttpError } from '../utils/error';
 export const FormController = {
   async create(req: Request, res: Response) {
     try {
@@ -20,13 +15,13 @@ export const FormController = {
       const { isValid, errors } = validate(payload, createFormValidator);
       console.log(errors);
       if (!isValid) {
-        throw new HttpError(400, "Invalid payload", errors);
+        throw new HttpError(400, 'Invalid payload', errors);
       }
 
       const form = await FormService.create(req.body);
 
       return res.status(201).json(form);
-    } catch (err: any) {
+    } catch (err) {
       const { status, ...error } = createErrorResponse(err);
       return res.status(status).json(error);
     }
@@ -69,7 +64,7 @@ export const FormController = {
     const { data } = req.body;
     try {
       const { isValid, errors } = validate({ id, data }, updateFormValidator);
-      if (!isValid) throw new HttpError(400, "Invalid params", errors);
+      if (!isValid) throw new HttpError(400, 'Invalid params', errors);
       const form = await FormService.update({ id, data });
 
       res.status(201).json({

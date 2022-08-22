@@ -1,4 +1,4 @@
-import { TypedRequestBody } from ".";
+import { TypedRequestBody } from '.';
 
 export type CreateQuestionInput = {
   text: string;

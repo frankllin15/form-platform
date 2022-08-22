@@ -1,5 +1,5 @@
-import { TypedRequestBody, TypedRequestQuery } from ".";
-import { CreateQuestionInput, UpdateQuestionInput } from "./questions";
+import { TypedRequestBody, TypedRequestQuery } from '.';
+import { CreateQuestionInput, UpdateQuestionInput } from './questions';
 
 export type CreateFormInput = {
   name: string;
