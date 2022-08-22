@@ -33,9 +33,9 @@ export type UpdateFormInput = {
   };
 };
 
-export interface CreateQuestionUpdateForm {
+export type CreateQuestionUpdateForm = {
   create: CreateQuestionInput;
-}
+};
 
 export type UpdateQuestionUpdateForm = {
   update: UpdateQuestionInput;

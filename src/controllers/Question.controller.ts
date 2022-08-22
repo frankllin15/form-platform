@@ -1,4 +1,3 @@
-import { CreateQuestionRequest } from './../types/questions.d';
 import db from '../lib/prismaClient';
 import { Request, Response } from 'express';
 

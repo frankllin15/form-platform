@@ -1,5 +1,3 @@
-import { validate } from '../utils/validator';
-import { CreateFormInput } from './../types/form.d';
 import { ValidatorSchema } from '../utils/validator';
 export const createFormValidator: ValidatorSchema = {
   name: {
