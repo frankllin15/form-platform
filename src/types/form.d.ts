@@ -5,6 +5,7 @@ export type CreateFormInput = {
   name: string;
   description: string | null;
   questions: CreateQuestionInput[];
+  authorId: string;
 };
 
 export type CreateFormRequest = TypedRequestBody<CreateFormInput>;

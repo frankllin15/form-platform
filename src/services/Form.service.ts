@@ -27,6 +27,9 @@ export const FormService = {
 
     return await db.form.create({
       data: {
+        author: {
+          connect: { id: input.authorId },
+        },
         name,
         description,
         questions: {
