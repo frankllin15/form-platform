@@ -8,6 +8,10 @@ export const createFormValidator: ValidatorSchema = {
     type: 'string',
     required: true,
   },
+  authorId: {
+    type: 'string',
+    required: true,
+  },
   questions: {
     type: 'array',
     required: true,

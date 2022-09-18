@@ -13,7 +13,6 @@ export const FormController = {
       const payload = req.body as CreateFormInput;
 
       const { isValid, errors } = validate(payload, createFormValidator);
-      console.log(errors);
       if (!isValid) {
         throw new HttpError(400, 'Invalid payload', errors);
       }

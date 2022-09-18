@@ -7,6 +7,12 @@ import {
 import db from '../lib/prismaClient';
 
 const formIncludes = {
+  author: {
+    select: {
+      id: true,
+      name: true,
+  },
+},
   questions: {
     include: {
       options: {
@@ -26,7 +32,7 @@ export const FormService = {
     const { name, description, questions } = input;
 
     return await db.form.create({
-      data: {
+      data: { 
         author: {
           connect: { id: input.authorId },
         },
