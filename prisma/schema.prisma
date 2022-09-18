@@ -15,8 +15,8 @@ model Form {
   name        String
   description String?
   questions   Question[]
-  author      User       @relation(fields: [authorId], references: [id])
-  authorId    String     @unique
+  author      User?       @relation(fields: [authorId], references: [id])
+  authorId    String?     @unique
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 }
