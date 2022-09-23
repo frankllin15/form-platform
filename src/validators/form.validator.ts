@@ -16,20 +16,28 @@ export const createFormValidator: ValidatorSchema = {
     type: 'array',
     required: true,
     items: {
-      text: {
+      label: {
         type: 'string',
+        required: true,
+      },
+      questionTypeId: {
+        type: 'number',
+        required: true,
+      },
+      order: {
+        type: 'number',
         required: true,
       },
       options: {
         type: 'array',
         required: true,
         items: {
-          text: {
+          value: {
             type: 'string',
             required: true,
           },
-          answer: {
-            type: 'boolean',
+          order: {
+            type: 'number',
             required: true,
           },
         },
@@ -59,19 +67,27 @@ export const updateFormValidator: ValidatorSchema = {
           create: {
             type: 'array',
             items: {
-              text: {
+              label: {
                 type: 'string',
+                required: true,
+              },
+              questionTypeId: {
+                type: 'number',
+                required: true,
+              },
+              order: {
+                type: 'number',
                 required: true,
               },
               options: {
                 type: 'array',
                 items: {
-                  text: {
+                  value: {
                     type: 'string',
                     required: true,
                   },
-                  answer: {
-                    type: 'boolean',
+                  order: {
+                    type: 'number',
                     required: true,
                   },
                 },
@@ -85,8 +101,14 @@ export const updateFormValidator: ValidatorSchema = {
                 type: 'string',
                 required: true,
               },
-              text: {
+              label: {
                 type: 'string',
+              },
+              questionTypeId: {
+                type: 'number',
+              },
+              order: {
+                type: 'number',
               },
               options: {
                 type: 'object',
@@ -94,11 +116,11 @@ export const updateFormValidator: ValidatorSchema = {
                   create: {
                     type: 'array',
                     items: {
-                      text: {
+                      value: {
                         type: 'string',
                       },
-                      answer: {
-                        type: 'boolean',
+                      order: {
+                        type: 'number',
                       },
                     },
                   },
@@ -109,11 +131,11 @@ export const updateFormValidator: ValidatorSchema = {
                         type: 'string',
                         required: true,
                       },
-                      text: {
+                      value: {
                         type: 'string',
                       },
-                      answer: {
-                        type: 'boolean',
+                      order: {
+                        type: 'number',
                       },
                     },
                   },

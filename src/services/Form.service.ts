@@ -41,12 +41,15 @@ export const FormService = {
         questions: {
           create: questions.map(question => {
             return {
-              text: question.text,
+              label: question.label,
+              type: {
+                connect: { id: question.questionTypeId },
+              },
+              order: question.order,
               options: {
                 create: question.options.map((option, index) => {
                   return {
-                    text: option.text,
-                    answer: option.answer,
+                    value: option.value,
                     order: index,
                   };
                 }),
@@ -106,11 +109,10 @@ export const FormService = {
                       },
                     };
                   }),
-                  create: options?.create?.map((option, index) => {
+                  create: options?.create?.map((option) => {
                     return {
-                      text: option.text,
-                      answer: option.answer,
-                      order: index,
+                      value: option.value,
+                      order: option.order,
                     };
                   }),
                   deleteMany: {
@@ -127,13 +129,16 @@ export const FormService = {
           }),
           create: questions?.create?.map(question => {
             return {
-              text: question.text,
+              label: question.label,
+              order: question.order,
+              type: {
+                connect: { id: question.questionTypeId },
+              },
               options: {
-                create: question.options.map((option, index) => {
+                create: question.options.map((option) => {
                   return {
-                    text: option.text,
-                    answer: option.answer,
-                    order: index,
+                    value: option.value,
+                    order: option.order,
                   };
                 }),
               },

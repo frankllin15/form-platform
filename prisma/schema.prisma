@@ -23,21 +23,29 @@ model Form {
 
 model Question {
   id        String            @id @default(cuid())
-  text      String
-  form      Form              @relation(fields: [formId], references: [id], onDelete: Cascade)
   formId    String
+  questionTypeId Int
+  label      String
+  type      QuestionType @relation(fields: [questionTypeId], references: [id])
+  order     Int
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
+  form      Form              @relation(fields: [formId], references: [id], onDelete: Cascade)
   options   QuestionOptions[]
 }
 
 model QuestionOptions {
   id         String   @id @default(cuid())
-  text       String
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  questionId String
-  answer     Boolean
+  value       String
   order      Int
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model QuestionType {
+  id         Int   @id @default(autoincrement())
+  name       String
+  questions  Question[]
 }
 
 model User {

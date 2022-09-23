@@ -1,32 +1,35 @@
 import { TypedRequestBody } from '.';
 
 export type CreateQuestionInput = {
-  text: string;
-  options: CreateOptionQuestionInput[];
+  label: string;
+  questionTypeId: number;
+  order: number;
+  options: CreateQuestionOptionInput[];
 };
 
 export type UpdateQuestionInput = {
   id: string;
-  text?: string;
+  questionTypeId?: number;
+  order?: number;
+  label?: string;
   options?: {
-    update: UpdateOptionQuestionInput[];
-    create: CreateOptionQuestionInput[];
+    update: UpdateQuestionOptionInput[];
+    create: CreateQuestionOptionInput[];
     delete: {
       id: string;
     }[];
   };
 };
 
-export type CreateOptionQuestionInput = {
-  text: string;
-  answer: boolean;
-  // order: number;
+export type CreateQuestionOptionInput = {
+  value: string;
+  order: number;
 };
 
-export type UpdateOptionQuestionInput = {
+export type UpdateQuestionOptionInput = {
   id: string;
-  text?: string;
-  answer?: boolean;
+  value?: string;
+  order?: number;
 };
 
 export type CreateQuestionRequest = TypedRequestBody<CreateQuestionInput>;
