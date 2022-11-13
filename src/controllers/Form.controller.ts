@@ -1,23 +1,15 @@
 import { Request, Response } from 'express';
 import type { CreateFormInput } from '../types/form';
 import { FormService } from '../services/Form.service';
-import { validate } from '../utils/validator';
-import {
-  createFormValidator,
-  updateFormValidator,
-} from '../validators/form.validator';
+import {} from '../validators/form.validator';
 import { createErrorResponse, HttpError } from '../utils/error';
+
 export const FormController = {
   async create(req: Request, res: Response) {
     try {
       const payload = req.body as CreateFormInput;
 
-      const { isValid, errors } = validate(payload, createFormValidator);
-      if (!isValid) {
-        throw new HttpError(400, 'Invalid payload', errors);
-      }
-
-      const form = await FormService.create(req.body);
+      const form = await FormService.create(payload);
 
       return res.status(201).json(form);
     } catch (err) {
@@ -62,8 +54,6 @@ export const FormController = {
     const { id } = req.params as { id: string };
     const { data } = req.body;
     try {
-      const { isValid, errors } = validate({ id, data }, updateFormValidator);
-      if (!isValid) throw new HttpError(400, 'Invalid params', errors);
       const form = await FormService.update({ id, data });
 
       res.status(201).json({

@@ -1,12 +1,7 @@
 import { HttpError } from './../utils/error';
-import {
-  createUserValidator,
-  updateUserValidator,
-} from './../validators/user.validator';
 import { Request, Response } from 'express';
 import { UserService } from '../services/User.service';
 import { createErrorResponse } from '../utils/error';
-import { validate } from '../utils/validator';
 
 export const UserController = {
   async getAll(req: Request, res: Response) {
@@ -37,11 +32,7 @@ export const UserController = {
   },
   async create(req: Request, res: Response) {
     try {
-      const { isValid, errors } = validate(req.body, createUserValidator);
 
-      if (!isValid) {
-        throw new HttpError(400, 'Validation error', errors);
-      }
 
       const user = await UserService.create(req.body);
       return res.status(201).json(user);
@@ -53,15 +44,6 @@ export const UserController = {
   async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-
-      const { isValid, errors } = validate(
-        { id, ...req.body },
-        updateUserValidator
-      );
-
-      if (!isValid) {
-        throw new HttpError(400, 'Validation error', errors);
-      }
 
       const user = await UserService.update({ id, ...req.body });
       return res.status(200).json(user);

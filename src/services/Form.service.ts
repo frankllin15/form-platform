@@ -5,21 +5,21 @@ import {
   UpdateFormInput,
 } from '../types/form';
 import db from '../lib/prismaClient';
+import { HttpError } from '../utils/error';
 
 const formIncludes = {
   author: {
     select: {
       id: true,
       name: true,
+    },
   },
-},
   questions: {
     include: {
       options: {
         select: {
           id: true,
-          text: true,
-          answer: true,
+          value: true,
           order: true,
         },
       },
@@ -31,8 +31,16 @@ export const FormService = {
   async create(input: CreateFormInput) {
     const { name, description, questions } = input;
 
+    const user = await db.user.findUnique({
+      where: {
+        id: input.authorId,
+      },
+    });
+
+    if (!user) throw new HttpError(400, 'User not found');
+
     return await db.form.create({
-      data: { 
+      data: {
         author: {
           connect: { id: input.authorId },
         },
@@ -109,7 +117,7 @@ export const FormService = {
                       },
                     };
                   }),
-                  create: options?.create?.map((option) => {
+                  create: options?.create?.map(option => {
                     return {
                       value: option.value,
                       order: option.order,
@@ -135,7 +143,7 @@ export const FormService = {
                 connect: { id: question.questionTypeId },
               },
               options: {
-                create: question.options.map((option) => {
+                create: question.options.map(option => {
                   return {
                     value: option.value,
                     order: option.order,
