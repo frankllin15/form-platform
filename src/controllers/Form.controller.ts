@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import type { CreateFormInput } from '../types/form';
 import { FormService } from '../services/Form.service';
-import {} from '../validators/form.validator';
 import { createErrorResponse, HttpError } from '../utils/error';
 
 export const FormController = {
@@ -51,9 +50,15 @@ export const FormController = {
     }
   },
   async update(req: Request, res: Response) {
-    const { id } = req.params as { id: string };
-    const { data } = req.body;
     try {
+      const { id } = req.params as { id: string };
+      const { data } = req.body;
+      if (!id) throw new HttpError(400, "Required param missing 'id'");
+
+      if (!data) throw new HttpError(400, "Required param missing 'data'");
+
+      console.log('data', data);
+
       const form = await FormService.update({ id, data });
 
       res.status(201).json({

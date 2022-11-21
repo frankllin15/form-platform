@@ -3,7 +3,7 @@ import { CreateUserInput, UpdateUserInput } from '../types/user';
 import bcrypt from 'bcryptjs';
 
 export const UserService = {
-  async getAll(options: { take: number; skip: number }) {
+  async getAll(options: { take?: number; skip?: number }) {
     const users = await db.user.findMany({
       ...options,
     });

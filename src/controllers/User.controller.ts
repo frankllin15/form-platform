@@ -9,8 +9,8 @@ export const UserController = {
       const { take, skip } = req.query;
 
       const users = await UserService.getAll({
-        take: Number(take),
-        skip: Number(skip),
+        ...(take && { take: Number(take) }),
+        ...(skip && { skip: Number(skip) }),
       });
       return res.status(200).json(users);
     } catch (err) {
@@ -32,8 +32,6 @@ export const UserController = {
   },
   async create(req: Request, res: Response) {
     try {
-
-
       const user = await UserService.create(req.body);
       return res.status(201).json(user);
     } catch (err) {

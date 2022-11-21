@@ -30,7 +30,7 @@ const formIncludes = {
 export const FormService = {
   async create(input: CreateFormInput) {
     const { name, description, questions } = input;
-
+    console.log('authorId', input.authorId);
     const user = await db.user.findUnique({
       where: {
         id: input.authorId,
@@ -39,6 +39,7 @@ export const FormService = {
 
     if (!user) throw new HttpError(400, 'User not found');
 
+    console.log('user', user);
     return await db.form.create({
       data: {
         author: {
@@ -47,13 +48,13 @@ export const FormService = {
         name,
         description,
         questions: {
-          create: questions.map(question => {
+          create: questions.map((question, questionOrder) => {
             return {
               label: question.label,
               type: {
                 connect: { id: question.questionTypeId },
               },
-              order: question.order,
+              order: questionOrder,
               options: {
                 create: question.options.map((option, index) => {
                   return {
@@ -89,7 +90,6 @@ export const FormService = {
     });
   },
   async update({ id, data: { questions, ...formData } }: UpdateFormInput) {
-    console.log('formData', questions.update[0].options?.delete[0]);
     return await db.form.update({
       where: {
         id,
@@ -135,18 +135,18 @@ export const FormService = {
               },
             };
           }),
-          create: questions?.create?.map(question => {
+          create: questions?.create?.map((question, questionIndex) => {
             return {
               label: question.label,
-              order: question.order,
+              order: questionIndex,
               type: {
                 connect: { id: question.questionTypeId },
               },
               options: {
-                create: question.options.map(option => {
+                create: question.options.map((option, optionIndex) => {
                   return {
                     value: option.value,
-                    order: option.order,
+                    order: optionIndex,
                   };
                 }),
               },
